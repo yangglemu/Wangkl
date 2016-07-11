@@ -44,7 +44,7 @@ class MainActivity : Activity() {
         listLayout = layoutInflater.inflate(layoutId, null)
         listView = listLayout.findViewById(listViewId) as ListView
         listView.adapter = adapter
-        //adapter.setSort(listLayout)
+        adapter.setSort(listLayout)
         mainLayout.addView(listLayout)
     }
 

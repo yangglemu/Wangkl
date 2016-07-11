@@ -1,6 +1,7 @@
 package com.soft.wangkl
 
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.BaseAdapter
@@ -35,45 +36,67 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
     abstract fun setSort(v: View)
 
     fun setClick(tv: View, name: String) {
-        val lastMap = mData.last()
-        mData.remove(lastMap)
+
         when (name) {
             "rq" -> {
                 tv.setOnClickListener {
+                    val lastMap = mData[mData.size-1]
+                    mData.remove(lastMap)
                     if (tv.tag == "desc") {
-                        mData.sortByDescending { dateTimeFormatter.parse(it["rq"]) }
+                        try {
+                            mData.sortByDescending { dateTimeFormatter.parse(it["rq"]) }
+                        }catch (e:Exception){
+                            Log.e("desc","$e")
+                        }
                         tv.tag = "asc"
                     } else {
                         mData.sortBy { dateTimeFormatter.parse(it[name]) }
                         tv.tag = "desc"
                     }
+                    mData.add(lastMap)
+                    notifyDataSetChanged()
                 }
             }
             "zq" -> {
                 tv.setOnClickListener {
+                    val lastMap = mData[mData.size-1]
+                    mData.remove(lastMap)
                     if (tv.tag == "desc") {
                         mData.sortByDescending { it[name]?.toFloat() }
                         tv.tag = "asc"
                     } else {
-                        mData.sortBy { it[name]?.toFloat() }
+                        try {
+                            mData.sortBy { it[name]?.toFloat() }
+                        }catch (e:Exception){
+                            Log.e("zq","$e")
+                        }
                         tv.tag = "desc"
                     }
+                    mData.add(lastMap)
+                    notifyDataSetChanged()
                 }
             }
             else -> {
                 tv.setOnClickListener {
+                    val lastMap = mData[mData.size-1]
+                    mData.remove(lastMap)
                     if (tv.tag == "desc") {
-                        mData.sortByDescending { it[name]?.toInt() }
+                        mData.sortByDescending { it[name]?.toFloat() }
                         tv.tag = "asc"
                     } else {
-                        mData.sortBy { it[name]?.toInt() }
+                        try {
+                            mData.sortBy { it[name]?.toFloat() }
+                        }catch (e:Exception){
+                            Log.e("else","$e")
+                        }
                         tv.tag = "desc"
                     }
+                    mData.add(lastMap)
+                    notifyDataSetChanged()
                 }
             }
         }
-        mData.add(lastMap)
-        notifyDataSetChanged()
+
     }
 
 

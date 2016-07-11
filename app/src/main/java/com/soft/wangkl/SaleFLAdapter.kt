@@ -1,6 +1,7 @@
 package com.soft.wangkl
 
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
