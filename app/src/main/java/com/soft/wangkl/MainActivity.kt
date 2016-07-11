@@ -1,9 +1,10 @@
 package com.soft.wangkl
 
 import android.app.Activity
-import android.app.Dialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,8 +24,8 @@ class MainActivity : Activity() {
     val mainLayout: LinearLayout by lazy {
         findViewById(R.id.mainLayout) as LinearLayout
     }
-    var listLayout: View? = null
-    var listView: ListView? = null
+    lateinit var listLayout: View
+    lateinit var listView: ListView
     var timer: Timer? = null
 
     companion object {
@@ -39,10 +40,11 @@ class MainActivity : Activity() {
     }
 
     fun createListLayout(layoutId: Int, listViewId: Int, adapter: DataAdapter) {
-        if (listLayout != null) mainLayout.removeView(listLayout)
+        mainLayout.removeAllViews()
         listLayout = layoutInflater.inflate(layoutId, null)
-        listView = listLayout?.findViewById(listViewId) as ListView
-        listView?.adapter = adapter
+        listView = listLayout.findViewById(listViewId) as ListView
+        listView.adapter = adapter
+        //adapter.setSort(listLayout)
         mainLayout.addView(listLayout)
     }
 
@@ -55,6 +57,7 @@ class MainActivity : Activity() {
         when (item.itemId) {
             R.id.sp -> {
                 createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
+
                 toast("商品资料")
             }
             R.id.mx -> {
@@ -118,9 +121,23 @@ class MainActivity : Activity() {
                 })
                 dp.show()
             }
-            R.id.about -> {
-                val dialog = Dialog(this)
-                dialog.show()
+            R.id.refresh -> {
+                timer = Timer("receive")
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        try {
+                            email.receive()
+                            Looper.prepare()
+                            toast("同步数据成功！")
+                            Looper.loop()
+                        } catch(e: Exception) {
+                            Log.e("timer.schedule", "$e")
+                        } finally {
+                            timer?.cancel()
+                            timer = null
+                        }
+                    }
+                }, 0)
             }
             R.id.exit -> finish()
             else -> return false
