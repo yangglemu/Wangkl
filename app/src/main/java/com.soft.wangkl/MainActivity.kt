@@ -62,7 +62,7 @@ class MainActivity : Activity() {
                 toast("本日销售明细")
             }
             R.id.db -> {
-                var date = Date()
+                val date = Date()
                 val adapter = SaleDBAdapter(this, db, date, date)
                 createListLayout(R.layout.sale_db, R.id.listView_sale_db, adapter)
                 toast("本日销售单笔")
@@ -119,7 +119,7 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.about -> {
-                val dialog = Dialog(this)
+                val dialog = Dialog(this, R.layout.sale_db_input)
                 dialog.show()
             }
             R.id.exit -> finish()
