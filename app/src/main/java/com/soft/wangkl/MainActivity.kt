@@ -65,7 +65,7 @@ class MainActivity : Activity() {
                 toast("本日销售明细")
             }
             R.id.db -> {
-                var date = Date()
+                val date = Date()
                 val adapter = SaleDBAdapter(this, db, date, date)
                 createListLayout(R.layout.sale_db, R.id.listView_sale_db, adapter)
                 toast("本日销售单笔")
@@ -121,34 +121,27 @@ class MainActivity : Activity() {
                 })
                 dp.show()
             }
-            R.id.refresh -> {
-                timer = Timer("receive")
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        try {
-                            email.receive()
-                            Looper.prepare()
-                            toast("同步数据成功！")
-                            Looper.loop()
-                        } catch(e: Exception) {
-                            Log.e("timer.schedule", "$e")
-                        } finally {
-                            timer?.cancel()
-                            timer = null
-                        }
-                    }
-                }, 0)
+            R.id.sy -> {
+                try {
+                    val sy = InputSaleDialog(this@MainActivity, R.layout.input_sale_dialog, db)
+                    sy.setCancelable(false)
+                    sy.show()
+                }catch (e:Exception){
+                    Log.e("sy","$e")
+                    e.printStackTrace()
+                }
+                toast("收银")
+            }
+            R.id.rk -> {
+                toast("入库")
+            }
+            R.id.ck -> {
+                toast("出库")
             }
             R.id.exit -> finish()
             else -> return false
         }
         return true
-    }
-
-    fun showPopupMenu(v: View) {
-        val menu = PopupMenu(this, v)
-        menuInflater.inflate(R.menu.main, menu.menu)
-        menu.show()
     }
 
     fun toast(msg: String) {

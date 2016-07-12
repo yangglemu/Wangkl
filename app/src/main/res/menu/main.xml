@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/sy"
+          android:title="收银"
+          android:showAsAction="always|withText"/>
+
     <item android:id="@+id/fl"
           android:title="汇总"
           android:showAsAction="always|withText"/>
 
-    <item android:id="@+id/day"
-          android:title="按天"
-          android:showAsAction="always|withText"/>
-
-
     <item android:id="@+id/sp"
           android:title="商品"
           android:showAsAction="always|withText"/>
+
+    <item android:id="@+id/day"
+          android:title="按天"
+          android:showAsAction="ifRoom|withText"/>
 
     <item android:id="@+id/db"
           android:title="单笔"
@@ -43,9 +46,13 @@
         </menu>
     </item>
 
-    <item android:id="@+id/refresh"
-          android:title="同步"
+    <item android:id="@+id/rk"
+          android:title="入库"
           android:showAsAction="never|withText"/>
+
+    <item android:id="@+id/ck"
+          android:title="出库"
+          android:showAsAction="never"/>
 
     <item android:id="@+id/exit"
           android:title="退出"
