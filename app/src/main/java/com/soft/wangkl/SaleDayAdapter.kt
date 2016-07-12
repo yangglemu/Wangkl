@@ -34,7 +34,7 @@ class SaleDayAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date?
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
             map["id"] = (++id).toString()
-            map["rq"] = dateFormatter.format(dateFormatter.parseObject(c.getString(0)))
+            map["rq"] = dateFormatter.format(dateFormatter.parseObject(c.getString(0))) + " 00:00:00"
             map["sl"] = c.getString(1)
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)

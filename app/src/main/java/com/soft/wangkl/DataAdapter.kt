@@ -1,7 +1,6 @@
 package com.soft.wangkl
 
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.BaseAdapter
@@ -20,9 +19,9 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
     val db = sqlite
     var start: Date? = start
     var end: Date? = end
-    val decimalFormatter = DecimalFormat("#,###.00")
-    val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
-    val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
+    val decimalFormatter = DecimalFormat("#,##0.00")
+    val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+    val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     init {
         initData()
@@ -36,67 +35,45 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
     abstract fun setSort(v: View)
 
     fun setClick(tv: View, name: String) {
-
-        when (name) {
-            "rq" -> {
-                tv.setOnClickListener {
-                    val lastMap = mData[mData.size-1]
-                    mData.remove(lastMap)
-                    if (tv.tag == "desc") {
-                        try {
-                            mData.sortByDescending { dateTimeFormatter.parse(it["rq"]) }
-                        }catch (e:Exception){
-                            Log.e("desc","$e")
+        tv.setOnClickListener({
+            val lastMap = mData[mData.size - 1]
+            mData.remove(lastMap)
+            when (name) {
+                "rq" -> {
+                    if (tv.tag == "asc") {
+                        mData.sortBy {
+                            dateTimeFormatter.parse(it[name])
+                        }
+                        tv.tag = "desc"
+                    } else {
+                        mData.sortByDescending {
+                            dateTimeFormatter.parse(it[name])
                         }
                         tv.tag = "asc"
-                    } else {
-                        mData.sortBy { dateTimeFormatter.parse(it[name]) }
-                        tv.tag = "desc"
                     }
-                    mData.add(lastMap)
-                    notifyDataSetChanged()
                 }
-            }
-            "zq" -> {
-                tv.setOnClickListener {
-                    val lastMap = mData[mData.size-1]
-                    mData.remove(lastMap)
-                    if (tv.tag == "desc") {
+                "je" -> {
+                    if (tv.tag == "asc") {
+                        mData.sortBy { decimalFormatter.parse(it[name]).toInt() }
+                        tv.tag = "desc"
+                    } else {
+                        mData.sortByDescending { decimalFormatter.parse(it[name]).toInt() }
+                        tv.tag = "asc"
+                    }
+                }
+                else -> {
+                    if (tv.tag == "asc") {
+                        mData.sortBy { it[name]?.toFloat() }
+                        tv.tag = "desc"
+                    } else {
                         mData.sortByDescending { it[name]?.toFloat() }
                         tv.tag = "asc"
-                    } else {
-                        try {
-                            mData.sortBy { it[name]?.toFloat() }
-                        }catch (e:Exception){
-                            Log.e("zq","$e")
-                        }
-                        tv.tag = "desc"
                     }
-                    mData.add(lastMap)
-                    notifyDataSetChanged()
                 }
             }
-            else -> {
-                tv.setOnClickListener {
-                    val lastMap = mData[mData.size-1]
-                    mData.remove(lastMap)
-                    if (tv.tag == "desc") {
-                        mData.sortByDescending { it[name]?.toFloat() }
-                        tv.tag = "asc"
-                    } else {
-                        try {
-                            mData.sortBy { it[name]?.toFloat() }
-                        }catch (e:Exception){
-                            Log.e("else","$e")
-                        }
-                        tv.tag = "desc"
-                    }
-                    mData.add(lastMap)
-                    notifyDataSetChanged()
-                }
-            }
-        }
-
+            mData.add(lastMap)
+            notifyDataSetChanged()
+        })
     }
 
 
