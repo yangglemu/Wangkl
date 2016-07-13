@@ -1,6 +1,8 @@
 package com.soft.wangkl
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Looper
@@ -8,10 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ListView
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
 import java.util.*
 
 class MainActivity : Activity() {
@@ -121,15 +120,31 @@ class MainActivity : Activity() {
                 })
                 dp.show()
             }
+            R.id.newGoods -> {
+                val input = AlertDialog.Builder(this,android.R.style.Theme_Holo_Dialog)
+                val et = EditText(this)
+                input.setTitle("请输入商品价格")
+                        .setView(et)
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setCancelable(false)
+                        .setPositiveButton("新增", { dialogInterface, i ->
+                            if (et.length() > 0) {
+                                try {
+                                    val tm = et.text.toString().toInt()
+                                    addGoods(tm)
+                                } catch (e: Exception) {
+                                    toast(e.message ?: "请输入数字!")
+                                }
+                            }
+                        })
+                        .setNegativeButton("退出", { dialogInterface, i ->
+                            dialogInterface.cancel()
+                        }).show()
+            }
             R.id.sy -> {
-                try {
-                    val sy = InputSaleDialog(this@MainActivity, R.layout.input_sale_dialog, db)
-                    sy.setCancelable(false)
-                    sy.show()
-                }catch (e:Exception){
-                    Log.e("sy","$e")
-                    e.printStackTrace()
-                }
+                val sy = InputSaleDialog(this@MainActivity, R.style.input_sale_dialog_style, db)
+                sy.setCancelable(false)
+                sy.show()
                 toast("收银")
             }
             R.id.rk -> {
@@ -142,6 +157,10 @@ class MainActivity : Activity() {
             else -> return false
         }
         return true
+    }
+
+    private fun addGoods(tm: Int) {
+
     }
 
     fun toast(msg: String) {

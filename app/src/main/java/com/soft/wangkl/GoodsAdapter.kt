@@ -45,13 +45,11 @@ class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(
     }
 
     override fun setSort(v: View) {
-        val id = v.findViewById(R.id.goods_header_id)
         val tm = v.findViewById(R.id.goods_header_tm)
         val sl = v.findViewById(R.id.goods_header_sl)
         val zq = v.findViewById(R.id.goods_header_zq)
         val je = v.findViewById(R.id.goods_header_je)
 
-        setClick(id, "id")
         setClick(tm, "tm")
         setClick(sl, "sl")
         setClick(zq, "zq")

@@ -34,7 +34,7 @@ class SaleDayAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date?
         while (c.moveToNext()) {
             val map = HashMap<String, String>()
             map["id"] = (++id).toString()
-            map["rq"] = dateFormatter.format(dateFormatter.parseObject(c.getString(0))) + " 00:00:00"
+            map["rq"] = c.getString(0)
             map["sl"] = c.getString(1)
             map["je"] = decimalFormatter.format(c.getInt(2))
             mData.add(map)
@@ -54,11 +54,9 @@ class SaleDayAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date?
     }
 
     override fun setSort(v: View) {
-        val id = v.findViewById(R.id.sale_day_header_id)
         val rq = v.findViewById(R.id.sale_day_header_rq)
         val sl = v.findViewById(R.id.sale_day_header_sl)
         val je = v.findViewById(R.id.sale_day_header_je)
-        setClick(id, "id")
         setClick(rq, "rq")
         setClick(sl, "sl")
         setClick(je, "je")

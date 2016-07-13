@@ -4,34 +4,50 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <View style="@style/verLine_item"/>
+
     <TextView
             android:id="@+id/input_sale_dialog_item_id"
+            style="@style/listItemStyle"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
+
+    <View style="@style/verLine_item"/>
 
     <TextView
             android:id="@+id/input_sale_dialog_item_tm"
+            style="@style/listItemStyle"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
+
+    <View style="@style/verLine_item"/>
 
     <TextView
             android:id="@+id/input_sale_dialog_item_sl"
+            style="@style/listItemStyle"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
+
+    <View style="@style/verLine_item"/>
 
     <TextView
             android:id="@+id/input_sale_dialog_item_zq"
+            style="@style/listItemStyle"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
+    <View style="@style/verLine_item"/>
+
     <TextView
             android:id="@+id/input_sale_dialog_item_je"
+            style="@style/listItemStyle"
             android:layout_width="0dp"
             android:layout_weight="1.5"
             android:layout_height="wrap_content"/>
 
+    <View style="@style/verLine_item"/>
 </LinearLayout>

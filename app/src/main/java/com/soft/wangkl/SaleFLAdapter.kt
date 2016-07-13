@@ -35,11 +35,9 @@ class SaleFLAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
     }
 
     override fun setSort(v: View) {
-        val id = v.findViewById(R.id.sale_fl_header_id)
         val tm = v.findViewById(R.id.sale_fl_header_tm)
         val sl = v.findViewById(R.id.sale_fl_header_sl)
         val je = v.findViewById(R.id.sale_fl_header_je)
-        setClick(id, "id")
         setClick(tm, "tm")
         setClick(sl, "sl")
         setClick(je, "je")

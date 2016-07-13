@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="verLineHeight_header">30dp</dimen>
     <dimen name="verLineHeight_item">25dp</dimen>
+    <dimen name="input_sale_dialog_button_width">290dp</dimen>
 </resources>

@@ -1,20 +1,29 @@
 package com.soft.wangkl
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by yangglemu on 2016/7/12.
  */
-class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : AlertDialog(activity) {
+class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : Dialog(activity, theme) {
+
     var row: Int = 0
+
+    val adapter = InputSaleAdapter(activity)
+
+    val dateTimeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
+
+    val decimalFormat = DecimalFormat("#,##0.00")
+
     val pm: PopupMenu by lazy {
         val pm = PopupMenu(activity, lv)
         pm.inflate(R.menu.input_sale_popup_menu)
@@ -41,6 +50,9 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
     val sl: EditText by lazy {
         findViewById(R.id.input_sale_dialog_sl) as EditText
     }
+    val sy: Button by lazy {
+        findViewById(R.id.input_sale_dialog_sy) as Button
+    }
     val ok: Button by lazy {
         findViewById(R.id.input_sale_dialog_buttonOK)!! as Button
     }
@@ -51,17 +63,50 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.input_sale_dialog)
-        val title = TextView(context)
-        title.textSize = 14.0f
-        title.text = "共 0 件商品，计 0 元"
-        title.gravity = Gravity.CENTER
-        setCustomTitle(title)
+        window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
+        window.attributes.width = window.windowManager.defaultDisplay.width
         cancel.setOnClickListener { dismiss() }
+        sy.setOnClickListener {
+            if (!checkTM()) {
+                toast("条码输入不正确!")
+                tm.requestFocus()
+                tm.selectAll()
+                return@setOnClickListener
+            }
+            if (!checkSL()) {
+                toast("数量输入不正确!")
+                sl.requestFocus()
+                sl.selectAll()
+                return@setOnClickListener
+            }
+            addRow()
+        }
+        lv.adapter = adapter
         lv.setOnItemLongClickListener { parent, view, position, id ->
             row = position
             pm.show()
             true
         }
+        tm.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+            if (b) tm.selectAll()
+        }
+        sl.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+            if (b) sl.selectAll()
+        }
+    }
+
+    private fun addRow() {
+        val id = lv.count + 1
+        val tm = tm.text.toString().toInt()
+        val sl = sl.text.toString().toInt()
+        val je = tm * sl
+        val map = HashMap<String, String>()
+        map["id"] = id.toString()
+        map["tm"] = tm.toString()
+        map["sl"] = sl.toString()
+        map["zq"] = "1.00"
+        map["je"] = je.toString()
+        adapter.addData(map)
     }
 
     private fun insertSaleData(): Boolean {
@@ -84,7 +129,7 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
     }
 
     private fun checkTM(): Boolean {
-        var value = false;
+        var value = false
         if (tm.length() > 0) {
             val c = db.rawQuery("select count(*) from goods where tm=${tm.text.toString()}", null)
             if (c.moveToNext()) {

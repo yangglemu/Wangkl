@@ -71,6 +71,9 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
                     }
                 }
             }
+            for (index in 0..mData.size - 1) {
+                mData[index]["id"] = (index + 1).toString()
+            }
             mData.add(lastMap)
             notifyDataSetChanged()
         })
