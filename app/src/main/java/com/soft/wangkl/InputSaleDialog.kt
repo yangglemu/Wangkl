@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Gravity
-import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -39,6 +37,10 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         pm
     }
 
+    val title: TextView by lazy {
+        findViewById(R.id.input_sale_dialog_title) as TextView
+    }
+
     val lv: ListView by lazy {
         findViewById(R.id.input_sale_dialog_listView) as ListView
     }
@@ -63,18 +65,18 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         setContentView(R.layout.input_sale_dialog)
         window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
         window.attributes.width = window.windowManager.defaultDisplay.width
+        ok.setOnClickListener {
+            if (insertSaleData()) toast("收银成功!")
+            else toast("收银失败!")
+        }
         cancel.setOnClickListener { dismiss() }
         sy.setOnClickListener {
-            if (!checkTM()) {
-                toast("条码输入不正确!")
-                tm.requestFocus()
-                tm.selectAll()
+            if (!checkTM(tm.text.toString())) {
+                toast("条码不存在!")
                 return@setOnClickListener
             }
-            if (!checkSL()) {
-                toast("数量输入不正确!")
-                sl.requestFocus()
-                sl.selectAll()
+            if (!checkSL(sl.text.toString())) {
+                toast("数量输入错误!")
                 return@setOnClickListener
             }
             addRow()
@@ -84,12 +86,6 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
             row = position
             pm.show()
             true
-        }
-        tm.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-            if (b) tm.selectAll()
-        }
-        sl.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-            if (b) sl.selectAll()
         }
     }
 
@@ -105,32 +101,31 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         map["zq"] = "1.00"
         map["je"] = je.toString()
         adapter.addData(map)
+        title.text = "合计: ${adapter.getSumSl()}件, ${adapter.getSumJe()}.00元"
         this.tm.text.clear()
         this.sl.setText("1")
         this.tm.requestFocus()
     }
 
     private fun insertSaleData(): Boolean {
+        var value = false
         if (lv.count < 1) {
             toast("提示: 列表为空!")
-            return false
+            return value
         }
-        if (!checkTM()) {
-            toast("条码不存在!")
-            return false
+        try {
+            adapter.insertSaledData(db)
+            value = true
+        } catch (e: Exception) {
+            value = false
         }
-        if (!checkSL()) {
-            toast("数量输入错误!")
-            return false
-        }
-        var sql = "insert into sale_db (rq,sl,je) values('',,,)"
-        return true
+        return value
     }
 
-    private fun checkTM(): Boolean {
+    private fun checkTM(ctm: String): Boolean {
         var value = false
-        if (tm.length() > 0) {
-            val c = db.rawQuery("select count(*) from goods where tm=${tm.text.toString()}", null)
+        if (ctm.length > 0) {
+            val c = db.rawQuery("select count(*) from goods where tm='$ctm'", null)
             if (c.moveToNext()) {
                 if (c.getInt(0) == 1) value = true
             }
@@ -139,21 +134,17 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         return value
     }
 
-    private fun checkSL(): Boolean {
+    private fun checkSL(s: String): Boolean {
         var value = false
-        if (sl.length() > 0) {
+        if (s.length > 0) {
             try {
-                val m = sl.text.toString().toInt()
+                val m = s.toInt()
                 value = true
             } catch (e: Exception) {
                 toast(e.message)
             }
         }
         return value
-    }
-
-    fun showPopupMenu() {
-
     }
 
     fun toast(msg: String?) {

@@ -17,7 +17,7 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, name, null, version
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("CREATE TABLE [goods] (tm TEXT PRIMARY KEY,sj INTEGER,zq REAL,sl INTEGER)")
         db.execSQL("CREATE TABLE [sale_db] (rq DATETIME PRIMARY KEY,sl INTEGER,je INTEGER)")
-        db.execSQL("CREATE TABLE [sale_mx] (id INTEGER PRIMARY KEY,rq DATETIME,tm TEXT,sl INTEGER,zq REAL,je INTEGER)")
+        db.execSQL("CREATE TABLE [sale_mx] (id INTEGER PRIMARY KEY AUTOINCREMENT,rq DATETIME,tm TEXT,sl INTEGER,zq REAL,je INTEGER)")
         db.execSQL("CREATE TABLE [history] (uid TEXT PRIMARY KEY,rq DATETIME)")
         db.execSQL("CREATE TABLE [rk] (rq DATETIME PRIMARY KEY,tm TEXT,sl INTEGER)")
         db.execSQL("CREATE TABLE [ck] (rq DATETIME PRIMARY KEY,tm TEXT,sl INTEGER)")
