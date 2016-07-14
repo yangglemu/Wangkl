@@ -122,9 +122,7 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
             toast("数量输入错误!")
             return false
         }
-        db.beginTransaction()
         var sql = "insert into sale_db (rq,sl,je) values('',,,)"
-        db.endTransaction()
         return true
     }
 

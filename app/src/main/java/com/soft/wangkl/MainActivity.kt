@@ -11,15 +11,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 
 class MainActivity : Activity() {
     val db: SQLiteDatabase by lazy {
         DbHelper(this).writableDatabase
     }
+    /*
     val email: Email by lazy {
         Email(this, db)
     }
+    */
     val mainLayout: LinearLayout by lazy {
         findViewById(R.id.mainLayout) as LinearLayout
     }
@@ -56,7 +60,6 @@ class MainActivity : Activity() {
         when (item.itemId) {
             R.id.sp -> {
                 createListLayout(R.layout.goods, R.id.listView_goods, GoodsAdapter(this, db))
-
                 toast("商品资料")
             }
             R.id.mx -> {
@@ -121,7 +124,7 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.newGoods -> {
-                val input = AlertDialog.Builder(this, android.R.style.Theme_Holo_Light)
+                val input = AlertDialog.Builder(this@MainActivity, android.R.style.Theme_Black)
                 val et = EditText(this)
                 input.setTitle("请输入商品价格")
                         .setView(et)
@@ -132,17 +135,19 @@ class MainActivity : Activity() {
                             dialogInterface.cancel()
                         })
                 val dialog = input.create()
+                dialog.show()
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     if (et.length() > 0) {
                         try {
                             val tm = et.text.toString().toInt()
                             addGoods(tm)
+                            et.text.clear()
+                            et.requestFocus()
                         } catch (e: Exception) {
                             toast(e.message ?: "数量处请输入数字!")
                         }
                     }
                 }
-                dialog.show()
             }
             R.id.sy -> {
                 val sy = InputSaleDialog(this@MainActivity, R.style.input_sale_dialog_style, db)
@@ -163,8 +168,13 @@ class MainActivity : Activity() {
     }
 
     private fun addGoods(tm: Int) {
-        val sql="replace into goods (tm,sj,zq,sl) values('$tm',$tm,'1.00',0)"
-        db.execSQL(sql)
+        try {
+            Log.e("tm", "${db.isOpen}")
+            db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
+            toast("新建商品成功!")
+        } catch (e: Exception) {
+            toast("error:$e")
+        }
     }
 
     fun toast(msg: String) {
