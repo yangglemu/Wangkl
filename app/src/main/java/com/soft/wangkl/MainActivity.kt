@@ -121,25 +121,28 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.newGoods -> {
-                val input = AlertDialog.Builder(this,android.R.style.Theme_Holo_Dialog)
+                val input = AlertDialog.Builder(this, android.R.style.Theme_Holo_Light)
                 val et = EditText(this)
                 input.setTitle("请输入商品价格")
                         .setView(et)
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setCancelable(false)
-                        .setPositiveButton("新增", { dialogInterface, i ->
-                            if (et.length() > 0) {
-                                try {
-                                    val tm = et.text.toString().toInt()
-                                    addGoods(tm)
-                                } catch (e: Exception) {
-                                    toast(e.message ?: "请输入数字!")
-                                }
-                            }
-                        })
+                        .setPositiveButton("新增", null)
                         .setNegativeButton("退出", { dialogInterface, i ->
                             dialogInterface.cancel()
-                        }).show()
+                        })
+                val dialog = input.create()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    if (et.length() > 0) {
+                        try {
+                            val tm = et.text.toString().toInt()
+                            addGoods(tm)
+                        } catch (e: Exception) {
+                            toast(e.message ?: "数量处请输入数字!")
+                        }
+                    }
+                }
+                dialog.show()
             }
             R.id.sy -> {
                 val sy = InputSaleDialog(this@MainActivity, R.style.input_sale_dialog_style, db)
@@ -160,7 +163,8 @@ class MainActivity : Activity() {
     }
 
     private fun addGoods(tm: Int) {
-
+        val sql="replace into goods (tm,sj,zq,sl) values('$tm',$tm,'1.00',0)"
+        db.execSQL(sql)
     }
 
     fun toast(msg: String) {

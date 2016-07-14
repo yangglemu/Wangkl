@@ -42,12 +42,18 @@ abstract class DataAdapter(context: MainActivity, sqlite: SQLiteDatabase, start:
                 "rq" -> {
                     if (tv.tag == "asc") {
                         mData.sortBy {
-                            dateTimeFormatter.parse(it[name])
+                            val df: SimpleDateFormat
+                            if (it[name]?.length == 10) df = dateFormatter
+                            else df = dateTimeFormatter
+                            df.parse(it[name])
                         }
                         tv.tag = "desc"
                     } else {
                         mData.sortByDescending {
-                            dateTimeFormatter.parse(it[name])
+                            val df: SimpleDateFormat
+                            if (it[name]?.length == 10) df = dateFormatter
+                            else df = dateTimeFormatter
+                            df.parse(it[name])
                         }
                         tv.tag = "asc"
                     }

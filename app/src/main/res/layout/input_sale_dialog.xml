@@ -17,7 +17,7 @@
 
     <LinearLayout
             android:orientation="horizontal"
-            android:paddingTop="8dp"
+            android:paddingTop="5dp"
             android:layout_width="@dimen/input_sale_dialog_button_width"
             android:layout_height="wrap_content">
 
@@ -35,7 +35,7 @@
 
     <LinearLayout
             android:orientation="horizontal"
-            android:paddingTop="8dp"
+            android:paddingTop="5dp"
             android:layout_width="@dimen/input_sale_dialog_button_width"
             android:layout_height="wrap_content">
 
@@ -54,7 +54,7 @@
     <LinearLayout
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingTop="8dp"
+            android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -67,8 +67,7 @@
 
     <LinearLayout
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="5dp"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <View style="@style/horLine"/>
+    <View style="@style/horLine" android:layout_marginTop="8dp"/>
 
     <LinearLayout
             android:orientation="horizontal"
