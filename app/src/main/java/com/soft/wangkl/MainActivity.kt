@@ -168,13 +168,8 @@ class MainActivity : Activity() {
     }
 
     private fun addGoods(tm: Int) {
-        try {
-            Log.e("tm", "${db.isOpen}")
-            db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
-            toast("新建商品成功!")
-        } catch (e: Exception) {
-            toast("error:$e")
-        }
+        db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
+        toast("新建商品成功!")
     }
 
     fun toast(msg: String) {

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -30,10 +31,7 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         pm.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.input_sale_menu_delete -> {
-                    val adapter = lv.adapter
-                    if (adapter is InputSaleAdapter) {
-                        adapter.removeData(row)
-                    }
+                    adapter.removeData(row)
                 }
             }
             true
@@ -97,8 +95,8 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
 
     private fun addRow() {
         val id = lv.count + 1
-        val tm = tm.text.toString().toInt()
-        val sl = sl.text.toString().toInt()
+        val tm = this.tm.text.toString().toInt()
+        val sl = this.sl.text.toString().toInt()
         val je = tm * sl
         val map = HashMap<String, String>()
         map["id"] = id.toString()
@@ -107,6 +105,9 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         map["zq"] = "1.00"
         map["je"] = je.toString()
         adapter.addData(map)
+        this.tm.text.clear()
+        this.sl.setText("1")
+        this.tm.requestFocus()
     }
 
     private fun insertSaleData(): Boolean {

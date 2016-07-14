@@ -37,11 +37,13 @@ class InputSaleAdapter(val context: Context) : BaseAdapter() {
 
     fun addData(map: HashMap<String, String>) {
         mData.add(map)
+        for (index in 0..mData.size - 1) mData[index]["id"] = (index + 1).toString()
         notifyDataSetChanged()
     }
 
-    fun removeData(position: Int){
+    fun removeData(position: Int) {
         mData.removeAt(position)
+        for (index in 0..mData.size - 1) mData[index]["id"] = (index + 1).toString()
         notifyDataSetChanged()
     }
 

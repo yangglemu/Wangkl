@@ -12,7 +12,7 @@ import java.util.*
 class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(context, sqlite) {
 
     override fun initData() {
-        val cursor = db.rawQuery("select tm,sl from goods where sl>0 order by sj asc", null)
+        val cursor = db.rawQuery("select tm,sl from goods order by sj asc", null)
         var id = 0
         var sl: Int
         var sj: Int
