@@ -65,9 +65,12 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         setContentView(R.layout.input_sale_dialog)
         window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
         window.attributes.width = window.windowManager.defaultDisplay.width
+        setCancelable(false)
         ok.setOnClickListener {
-            if (insertSaleData()) toast("收银成功!")
-            else toast("收银失败!")
+            if (insertSaleData()) {
+                toast("收银成功!")
+                adapter.removeAllData()
+            } else toast("收银失败!")
         }
         cancel.setOnClickListener { dismiss() }
         sy.setOnClickListener {

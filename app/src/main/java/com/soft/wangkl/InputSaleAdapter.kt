@@ -50,6 +50,11 @@ class InputSaleAdapter(val context: Context) : BaseAdapter() {
         notifyDataSetChanged()
     }
 
+    fun removeAllData(){
+        mData.clear()
+        notifyDataSetChanged()
+    }
+
     fun getSumSl(): Int = mData.sumBy { it["sl"]?.toInt() ?: 0 }
 
     fun getSumJe(): Int = mData.sumBy { it["je"]?.toInt() ?: 0 }

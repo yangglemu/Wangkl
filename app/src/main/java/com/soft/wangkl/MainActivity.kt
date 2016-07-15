@@ -6,7 +6,9 @@ import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Looper
+import android.text.InputType
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -124,41 +126,48 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.newGoods -> {
-                val input = AlertDialog.Builder(this@MainActivity, android.R.style.Theme_Black)
-                val et = EditText(this)
-                input.setTitle("请输入商品价格")
-                        .setView(et)
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setCancelable(false)
-                        .setPositiveButton("新增", null)
-                        .setNegativeButton("退出", { dialogInterface, i ->
-                            dialogInterface.cancel()
-                        })
+                val input = AlertDialog.Builder(this@MainActivity, R.style.input_dialog_style)
+                val view = layoutInflater.inflate(R.layout.goods_new, null)
+                val et = view.findViewById(R.id.goods_new_tm) as EditText
+                val btnOK=view.findViewById(R.id.goods_new_buttonOK)
+                val btnCancel=view.findViewById(R.id.goods_new_buttonCancel)
                 val dialog = input.create()
-                dialog.show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                dialog.window.attributes.width = dialog.window.windowManager.defaultDisplay.width
+                dialog.window.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL)
+                btnOK.setOnClickListener {
                     if (et.length() > 0) {
                         try {
                             val tm = et.text.toString().toInt()
                             addGoods(tm)
-                            et.text.clear()
-                            et.requestFocus()
+                            toast("新增商品成功!")
                         } catch (e: Exception) {
-                            toast(e.message ?: "数量处请输入数字!")
+                            toast(e.message ?: "请输入数字!")
                         }
+                        et.text.clear()
+                        et.requestFocus()
                     }
                 }
+                btnCancel.setOnClickListener { dialog.dismiss() }
+                input.setTitle("新增商品")
+                        .setView(view)
+                        .setIcon(R.drawable.icon)
+                        .setCancelable(false)
+
+                dialog.show()
             }
             R.id.sy -> {
-                val sy = InputSaleDialog(this@MainActivity, R.style.input_sale_dialog_style, db)
-                sy.setCancelable(false)
+                val sy = InputSaleDialog(this@MainActivity, R.style.datePickerDialog, db)
                 sy.show()
                 toast("收银")
             }
             R.id.rk -> {
+                val d = InputCkAndRkDialog(this, R.style.input_dialog_style, "入库操作", db)
+                d.show()
                 toast("入库")
             }
             R.id.ck -> {
+                val d = InputCkAndRkDialog(this, R.style.input_dialog_style, "出库操作", db)
+                d.show()
                 toast("出库")
             }
             R.id.exit -> finish()
@@ -168,7 +177,7 @@ class MainActivity : Activity() {
     }
 
     private fun addGoods(tm: Int) {
-        db.execSQL("replace into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
+        db.execSQL("insert into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
         toast("新建商品成功!")
     }
 
@@ -177,12 +186,14 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
+        /*
         val c = Calendar.getInstance(Locale.CHINA)
         c.time = Date()
         c.add(Calendar.DAY_OF_MONTH, -29)
         val date = c.time.toString(formatString)
         val sql = "delete from history where date(rq)<'$date'"
         db.execSQL(sql)
+        */
         db.close()
         super.onDestroy()
     }

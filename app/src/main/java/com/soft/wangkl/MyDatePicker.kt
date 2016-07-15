@@ -3,6 +3,7 @@ package com.soft.wangkl
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
 import android.widget.DatePicker
 import java.text.SimpleDateFormat
@@ -37,6 +38,7 @@ class MyDatePicker(context: Context?, theme: Int, postMsg: MainActivity.IPostMes
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setContentView(R.layout.date_picker)
+        window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
         val calendar = Calendar.getInstance(Locale.CHINA)
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)

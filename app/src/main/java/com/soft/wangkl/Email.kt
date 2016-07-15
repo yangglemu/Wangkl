@@ -21,7 +21,6 @@ import javax.xml.transform.stream.StreamResult
 fun Date.toString(formatString: String): String {
     return SimpleDateFormat(formatString, Locale.CHINA).format(this)
 }
-
 class Email(val context: Context, val db: SQLiteDatabase) {
     companion object {
         val smtpHost = "smtp.163.com"
