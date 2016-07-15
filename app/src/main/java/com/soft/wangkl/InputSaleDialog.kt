@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Window
 import android.widget.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -62,7 +63,9 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.requestFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.input_sale_dialog)
+        window.decorView.setPadding(0, 0, 0, 0)
         window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
         window.attributes.width = window.windowManager.defaultDisplay.width
         setCancelable(false)

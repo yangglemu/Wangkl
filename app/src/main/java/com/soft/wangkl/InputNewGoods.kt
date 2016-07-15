@@ -4,9 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.view.Gravity
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 
 /**
  * Created by 123456 on 2016/7/15.
@@ -24,13 +26,28 @@ class InputNewGoods(context: Context, theme: Int, val db: SQLiteDatabase) : Dial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.goods_new)
+        setContentView(R.layout.input_new_goods)
+        window.decorView.setPadding(0, 0, 0, 0)
+        window.attributes.width = window.windowManager.defaultDisplay.width
+        window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
+        window.setIcon(R.drawable.icon)
         setTitle("新建商品")
         this.setCancelable(false)
         ok.setOnClickListener {
-            val ctm = tm.text.toString().toInt()
-            db.execSQL("insert ")
+            try {
+                val ctm = tm.text.toString().toInt()
+                db.execSQL("insert into goods (tm,sj,zq,sl) values('$ctm',$ctm,1.0,0)")
+                tm.text.clear()
+                tm.requestFocus()
+                toast("新建商品成功!")
+            } catch (e: Exception) {
+                toast("新建商品失败!")
+            }
         }
         cancel.setOnClickListener { dismiss() }
+    }
+
+    private fun toast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }

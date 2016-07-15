@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import java.util.*
 
 /**
  * Created by 123456 on 2016/7/15.
  */
-class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQLiteDatabase) : Dialog(context, theme) {
+class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQLiteDatabase)
+: Dialog(context, theme) {
     val title = name
     val tm: EditText by lazy {
         findViewById(R.id.input_ck_and_rk_tm_editText) as EditText
@@ -32,8 +32,10 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.input_ck_and_rk)
+        window.decorView.setPadding(0, 0, 0, 0)
         window.attributes.width = window.windowManager.defaultDisplay.width
         window.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL)
+        window.setIcon(R.drawable.icon)
         setCancelable(false)
         setTitle(title)
         ok.setOnClickListener {
@@ -61,7 +63,6 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
         } finally {
             db.endTransaction()
         }
-
     }
 
     fun ck() {
@@ -80,6 +81,5 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
         } finally {
             db.endTransaction()
         }
-
     }
 }

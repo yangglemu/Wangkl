@@ -126,37 +126,12 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.newGoods -> {
-                val input = AlertDialog.Builder(this@MainActivity, R.style.input_dialog_style)
-                val view = layoutInflater.inflate(R.layout.goods_new, null)
-                val et = view.findViewById(R.id.goods_new_tm) as EditText
-                val btnOK=view.findViewById(R.id.goods_new_buttonOK)
-                val btnCancel=view.findViewById(R.id.goods_new_buttonCancel)
-                val dialog = input.create()
-                dialog.window.attributes.width = dialog.window.windowManager.defaultDisplay.width
-                dialog.window.setGravity(Gravity.TOP + Gravity.CENTER_HORIZONTAL)
-                btnOK.setOnClickListener {
-                    if (et.length() > 0) {
-                        try {
-                            val tm = et.text.toString().toInt()
-                            addGoods(tm)
-                            toast("新增商品成功!")
-                        } catch (e: Exception) {
-                            toast(e.message ?: "请输入数字!")
-                        }
-                        et.text.clear()
-                        et.requestFocus()
-                    }
-                }
-                btnCancel.setOnClickListener { dialog.dismiss() }
-                input.setTitle("新增商品")
-                        .setView(view)
-                        .setIcon(R.drawable.icon)
-                        .setCancelable(false)
-
-                dialog.show()
+                val dg = InputNewGoods(this, R.style.input_dialog_style, db)
+                dg.show()
+                toast("新建商品")
             }
             R.id.sy -> {
-                val sy = InputSaleDialog(this@MainActivity, R.style.datePickerDialog, db)
+                val sy = InputSaleDialog(this@MainActivity, R.style.input_dialog_style, db)
                 sy.show()
                 toast("收银")
             }
@@ -176,10 +151,6 @@ class MainActivity : Activity() {
         return true
     }
 
-    private fun addGoods(tm: Int) {
-        db.execSQL("insert into goods (tm,sj,zq,sl) values('$tm',$tm,1.0,0)")
-        toast("新建商品成功!")
-    }
 
     fun toast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
