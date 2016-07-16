@@ -49,6 +49,14 @@ class HistoryCkAdapter(activity: MainActivity, db: SQLiteDatabase, start: Date?,
     }
 
     override fun setSort(v: View) {
+        val tm = v.findViewById(R.id.history_rk_ck_item_tm)
+        val sl = v.findViewById(R.id.history_rk_ck_item_sl)
+        val rq = v.findViewById(R.id.history_rk_ck_item_rq)
+        val je = v.findViewById(R.id.history_rk_ck_item_je)
+        setClick(tm, "tm")
+        setClick(sl, "sl")
+        setClick(rq, "rq")
+        setClick(je, "je")
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
