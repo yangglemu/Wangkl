@@ -145,6 +145,17 @@ class MainActivity : Activity() {
                 d.show()
                 toast("出库")
             }
+            R.id.rk_ls -> {
+                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+
+                    }
+                })
+                toast("入库历史")
+            }
+            R.id.ck_ls -> {
+                toast("出库历史")
+            }
             R.id.exit -> finish()
             else -> return false
         }

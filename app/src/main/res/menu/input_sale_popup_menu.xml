@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/input_sale_menu_delete"
-            android:title="删除"/>
+            android:icon="@drawable/erase"
+            android:title="删除本行"/>
     <item
             android:id="@+id/input_sale_menu_edit"
-            android:title="修改"/>
+            android:icon="@drawable/edit"
+            android:title="修改价格"/>
 </menu>

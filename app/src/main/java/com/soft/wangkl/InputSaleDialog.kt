@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.support.v7.view.menu.MenuPopupHelper
 import android.text.InputType
 import android.view.Gravity
 import android.view.Window
@@ -38,7 +39,7 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
                 R.id.input_sale_menu_edit -> {
                     val et = EditText(context)
                     et.maxLines = 1
-                    et.inputType = InputType.TYPE_CLASS_NUMBER
+                    et.inputType = InputType.TYPE_CLASS_PHONE
                     val d = AlertDialog.Builder(context)
                     d.setTitle("输入新价格")
                             .setIcon(R.drawable.icon)
@@ -55,7 +56,9 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
                                 }
                             })
                             .setNegativeButton("退出", { dialogInterface, i -> dialogInterface.dismiss() })
-                            .show()
+                    val dialog = d.create()
+                    dialog.window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
+                    dialog.show()
                 }
             }
             true
@@ -109,10 +112,14 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         sy.setOnClickListener {
             if (!checkTM(tm.text.toString())) {
                 toast("条码不存在!")
+                tm.text.clear()
+                tm.requestFocus()
                 return@setOnClickListener
             }
             if (!checkSL(sl.text.toString())) {
                 toast("数量输入错误!")
+                sl.text.clear()
+                sl.setText("1")
                 return@setOnClickListener
             }
             addRow()

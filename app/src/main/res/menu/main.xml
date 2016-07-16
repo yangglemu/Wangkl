@@ -32,13 +32,10 @@
             android:showAsAction="ifRoom|withText"/>
 
     <item
-            android:id="@+id/rq"
             android:title="选择日期"
             android:showAsAction="never|withText">
         <menu>
-            <group
-                    android:id="@+id/group2"
-                    android:orderInCategory="145">
+            <group>
                 <item
                         android:id="@+id/rq_mx"
                         android:title="明细"
@@ -58,22 +55,34 @@
             </group>
         </menu>
     </item>
-
     <item
-            android:id="@+id/newGoods"
-            android:title="新建商品"
-            android:showAsAction="never|withText"/>
-
-    <item
-            android:id="@+id/rk"
-            android:title="入库"
-            android:showAsAction="never|withText"/>
-
-    <item
-            android:id="@+id/ck"
-            android:title="出库"
-            android:showAsAction="never"/>
-
+            android:title="仓库操作"
+            android:showAsAction="never|withText">
+        <menu>
+            <group>
+                <item
+                        android:id="@+id/newGoods"
+                        android:title="新建商品"
+                        android:showAsAction="never|withText"/>
+                <item
+                        android:id="@+id/rk"
+                        android:title="入库"
+                        android:showAsAction="never|withText"/>
+                <item
+                        android:id="@+id/ck"
+                        android:title="出库"
+                        android:showAsAction="never|withText"/>
+                <item
+                    android:id="@+id/rk_ls"
+                    android:title="入库历史"
+                    android:showAsAction="never|withText"/>
+                <item
+                    android:id="@+id/ck_ls"
+                    android:title="出库历史"
+                    android:showAsAction="never|withText"/>
+            </group>
+        </menu>
+    </item>
     <item
             android:id="@+id/exit"
             android:title="退出"
