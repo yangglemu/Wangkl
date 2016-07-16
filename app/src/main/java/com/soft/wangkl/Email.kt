@@ -2,11 +2,14 @@ package com.soft.wangkl
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.widget.Toast
 import com.sun.mail.pop3.POP3Folder
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import java.io.ByteArrayOutputStream
+import java.io.PrintWriter
 import java.io.StringReader
+import java.io.StringWriter
 import java.sql.DriverManager
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,6 +24,15 @@ import javax.xml.transform.stream.StreamResult
 fun Date.toString(formatString: String): String {
     return SimpleDateFormat(formatString, Locale.CHINA).format(this)
 }
+
+fun showException(context: Context, e:Exception) {
+    val sw=StringWriter()
+    val pw=PrintWriter(sw)
+    e.printStackTrace(pw)
+    pw.close()
+    Toast.makeText(context,sw.toString(),Toast.LENGTH_LONG).show()
+}
+
 class Email(val context: Context, val db: SQLiteDatabase) {
     companion object {
         val smtpHost = "smtp.163.com"

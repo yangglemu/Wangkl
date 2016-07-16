@@ -1,9 +1,12 @@
 package com.soft.wangkl
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import android.view.Window
 import android.widget.*
@@ -31,6 +34,28 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
             when (it.itemId) {
                 R.id.input_sale_menu_delete -> {
                     adapter.removeData(row)
+                }
+                R.id.input_sale_menu_edit -> {
+                    val et = EditText(context)
+                    et.maxLines = 1
+                    et.inputType = InputType.TYPE_CLASS_NUMBER
+                    val d = AlertDialog.Builder(context)
+                    d.setTitle("输入新价格")
+                            .setIcon(R.drawable.icon)
+                            .setView(et)
+                            .setPositiveButton("确定", { dialogInterface, i ->
+                                if (et.length() < 1) return@setPositiveButton
+                                try {
+                                    val je = et.text.toString().toInt()
+                                    adapter.updateData(row, je)
+                                    dialogInterface.dismiss()
+                                    toast("修改价格成功!")
+                                } catch (e: Exception) {
+                                    toast("修改价格失败!\r\n${e.message}")
+                                }
+                            })
+                            .setNegativeButton("退出", { dialogInterface, i -> dialogInterface.dismiss() })
+                            .show()
                 }
             }
             true
@@ -70,10 +95,15 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         window.attributes.width = window.windowManager.defaultDisplay.width
         setCancelable(false)
         ok.setOnClickListener {
-            if (insertSaleData()) {
-                toast("收银成功!")
+            try {
+                adapter.insertSaleData(db)
                 adapter.removeAllData()
-            } else toast("收银失败!")
+                toast("收银成功!")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                toast("收银失败!\r\n${e.message}")
+                //showException(context,e)
+            }
         }
         cancel.setOnClickListener { dismiss() }
         sy.setOnClickListener {
@@ -105,27 +135,14 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         map["tm"] = tm.toString()
         map["sl"] = sl.toString()
         map["zq"] = "1.00"
-        map["je"] = je.toString()
+        map["je"] = decimalFormat.format(je)
         adapter.addData(map)
-        title.text = "合计: ${adapter.getSumSl()}件, ${adapter.getSumJe()}.00元"
+        val sum_sl = adapter.getSumSl()
+        val sum_je = decimalFormat.format(adapter.getSumJe())
+        title.text = "合计: $sum_sl 件, $sum_je 元"
         this.tm.text.clear()
         this.sl.setText("1")
         this.tm.requestFocus()
-    }
-
-    private fun insertSaleData(): Boolean {
-        var value = false
-        if (lv.count < 1) {
-            toast("提示: 列表为空!")
-            return value
-        }
-        try {
-            adapter.insertSaledData(db)
-            value = true
-        } catch (e: Exception) {
-            value = false
-        }
-        return value
     }
 
     private fun checkTM(ctm: String): Boolean {
@@ -156,4 +173,5 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
     fun toast(msg: String?) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
+
 }

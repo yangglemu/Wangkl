@@ -16,7 +16,6 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
         val e = end?.toString(MainActivity.formatString)
         val c = db.rawQuery("select tm,sl,zq,je from sale_mx where date(rq)>='$s' and date(rq)<='$e' order by rq asc", null)
         var id = 0
-        val formatter = DecimalFormat("#,###.00")
         while (c.moveToNext()) {
             val sl = c.getInt(1)
             val je = c.getInt(3)
@@ -25,8 +24,8 @@ class SaleMXAdapter(context: MainActivity, sqlite: SQLiteDatabase, start: Date, 
             m["id"] = (++id).toString()
             m["tm"] = c.getString(0) + ".00"
             m["sl"] = sl.toString()
-            m["zq"] = zq.toString()
-            m["je"] = formatter.format(je)
+            m["zq"] = decimalFormatter.format(zq)
+            m["je"] = decimalFormatter.format(je)
             mData.add(m)
         }
         c.close()

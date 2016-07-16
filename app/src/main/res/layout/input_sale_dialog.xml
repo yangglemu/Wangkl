@@ -12,7 +12,7 @@
             android:text="合计: 0 件，0 元"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
-            android:paddingTop="15dp"
+            android:paddingTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -2,6 +2,7 @@ package com.soft.wangkl
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -17,7 +19,7 @@ import java.util.*
  */
 class InputSaleAdapter(val context: Context) : BaseAdapter() {
     private val mData = ArrayList<HashMap<String, String>>()
-
+    val df = DecimalFormat("#,##0.00")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         val vh: ViewHolder
@@ -50,16 +52,26 @@ class InputSaleAdapter(val context: Context) : BaseAdapter() {
         notifyDataSetChanged()
     }
 
-    fun removeAllData(){
+    fun removeAllData() {
         mData.clear()
         notifyDataSetChanged()
     }
 
-    fun getSumSl(): Int = mData.sumBy { it["sl"]?.toInt() ?: 0 }
+    fun getSumSl(): Int = mData.sumBy { it["sl"]!!.toInt() }
 
-    fun getSumJe(): Int = mData.sumBy { it["je"]?.toInt() ?: 0 }
+    fun getSumJe(): Int = mData.sumBy { df.parse(it["je"]).toInt() }
 
-    fun insertSaledData(db: SQLiteDatabase) {
+    fun updateData(position: Int, csj: Int) {
+        if (mData[position]["sl"]!!.toInt() > 1) throw Exception("修改金额的行,数量列的值不能大于1")
+        val sj = mData[position]["tm"]!!.toFloat().toInt()
+        if (csj > sj) throw Exception("csj > je,修改金额仅为于0-1折扣之间!")
+        val czq: Float = csj.toFloat() / sj
+        mData[position]["zq"] = df.format(czq)
+        mData[position]["je"] = df.format(csj)
+        notifyDataSetChanged()
+    }
+
+    fun insertSaleData(db: SQLiteDatabase) {
         val list = ArrayList<String>()
         val date = Date().toString("yyyy-MM-dd HH:mm:ss")
         val sb = StringBuilder("insert into sale_db(rq,sl,je) ")
@@ -76,7 +88,7 @@ class InputSaleAdapter(val context: Context) : BaseAdapter() {
             sb.append("'${map["tm"]}',")
             sb.append("${map["sl"]},")
             sb.append("${map["zq"]},")
-            sb.append("${map["je"]})")
+            sb.append("${df.parse(map["je"]).toInt()})")
             list.add(sb.toString())
             sb.delete(0, sb.length)
             list.add("update goods set sl=sl-${map["sl"]} where tm='${map["tm"]}'")
