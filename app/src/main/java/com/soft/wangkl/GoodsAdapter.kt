@@ -67,7 +67,7 @@ class GoodsAdapter(context: MainActivity, sqlite: SQLiteDatabase) : DataAdapter(
             v = convertView
             holder = v.tag as ViewHolder
         }
-        var map = mData[position]
+        val map = mData[position]
         holder.id.text = map["id"]
         holder.tm.text = map["tm"]
         holder.sl.text = map["sl"]

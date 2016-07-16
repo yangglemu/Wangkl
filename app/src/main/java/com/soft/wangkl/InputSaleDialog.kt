@@ -118,8 +118,8 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
             }
             if (!checkSL(sl.text.toString())) {
                 toast("数量输入错误!")
-                sl.text.clear()
                 sl.setText("1")
+                sl.selectAll()
                 return@setOnClickListener
             }
             addRow()

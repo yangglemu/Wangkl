@@ -54,7 +54,7 @@
                 android:hint="请输入数量"
                 android:text="1"
                 android:singleLine="true"
-                android:digits="1234567890."
+                android:digits="-1234567890."
                 android:inputType="number"
                 android:selectAllOnFocus="true"
                 android:layout_width="match_parent"

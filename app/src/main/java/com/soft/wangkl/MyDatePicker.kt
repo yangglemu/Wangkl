@@ -48,8 +48,8 @@ class MyDatePicker(context: Context?, theme: Int, postMsg: MainActivity.IPostMes
         datePickerStart.init(year, month, day, this)
         datePickerEnd.init(year, month, day, this)
         buttonOK.setOnClickListener {
-            this.dismiss()
             this.postMessage.postMessage(dateStart, dateEnd)
+            this.dismiss()
         }
         buttonCancel.setOnClickListener { dismiss() }
     }

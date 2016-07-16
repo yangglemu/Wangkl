@@ -38,6 +38,7 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
         window.setIcon(R.drawable.icon)
         setCancelable(false)
         setTitle(title)
+        tm.requestFocus()
         ok.setOnClickListener {
             if (title.contains("入")) rk()
             else if (title.contains("出")) ck()
@@ -56,6 +57,7 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
             db.setTransactionSuccessful()
             tm.text.clear()
             sl.text.clear()
+            tm.requestFocus()
             Toast.makeText(context, "入库成功!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -74,6 +76,9 @@ class InputCkAndRkDialog(context: Context, theme: Int, name: String, val db: SQL
             db.execSQL("update goods set sl=sl-$csl where tm='$ctm'")
             db.execSQL("insert into ck (rq,tm,sl) values('$date','$ctm',$csl)")
             db.setTransactionSuccessful()
+            tm.text.clear()
+            sl.text.clear()
+            tm.requestFocus()
             Toast.makeText(context, "出库成功!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()

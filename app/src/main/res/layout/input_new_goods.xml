@@ -17,6 +17,7 @@
 
         <EditText android:id="@+id/goods_new_tm"
                   android:hint="请输入商品价格"
+                  android:maxLines="1"
                   android:selectAllOnFocus="true"
                   android:inputType="number"
                   android:digits="1234567890."

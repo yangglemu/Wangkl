@@ -32,6 +32,7 @@ class InputNewGoods(context: Context, theme: Int, val db: SQLiteDatabase) : Dial
         window.attributes.gravity = Gravity.TOP + Gravity.CENTER_HORIZONTAL
         window.setIcon(R.drawable.icon)
         setTitle("新建商品")
+        tm.requestFocus()
         this.setCancelable(false)
         ok.setOnClickListener {
             try {

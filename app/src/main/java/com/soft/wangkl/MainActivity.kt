@@ -31,7 +31,7 @@ class MainActivity : Activity() {
     }
     lateinit var listLayout: View
     lateinit var listView: ListView
-    var timer: Timer? = null
+    //var timer: Timer? = null
 
     companion object {
         var formatString = "yyyy-MM-dd"
@@ -116,45 +116,55 @@ class MainActivity : Activity() {
                 dp.show()
             }
             R.id.rq_day -> {
-                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
                     override fun postMessage(start: Date, end: Date) {
                         val sale_day = SaleDayAdapter(this@MainActivity, db, start, end)
                         createListLayout(R.layout.sale_day, R.id.listView_sale_day, sale_day)
                         toast("选择日期:按天汇总")
                     }
-                })
-                dp.show()
+                }).show()
             }
             R.id.newGoods -> {
-                val dg = InputNewGoods(this, R.style.input_dialog_style, db)
-                dg.show()
+                InputNewGoods(this, R.style.input_dialog_style, db).show()
                 toast("新建商品")
             }
             R.id.sy -> {
-                val sy = InputSaleDialog(this@MainActivity, R.style.input_dialog_style, db)
-                sy.show()
+                InputSaleDialog(this@MainActivity, R.style.input_dialog_style, db).show()
                 toast("收银")
             }
             R.id.rk -> {
-                val d = InputCkAndRkDialog(this, R.style.input_dialog_style, "入库操作", db)
-                d.show()
+                InputCkAndRkDialog(this, R.style.input_dialog_style, "入库操作", db).show()
                 toast("入库")
             }
             R.id.ck -> {
-                val d = InputCkAndRkDialog(this, R.style.input_dialog_style, "出库操作", db)
-                d.show()
+                InputCkAndRkDialog(this, R.style.input_dialog_style, "出库操作", db).show()
                 toast("出库")
             }
             R.id.rk_ls -> {
-                val dp = MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
                     override fun postMessage(start: Date, end: Date) {
-
+                        try {
+                            val adapter = HistoryRkAdapter(this@MainActivity, db, start, end)
+                            createListLayout(R.layout.history, R.id.listView_history, adapter)
+                            toast("入库历史")
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                })
-                toast("入库历史")
+                }).show()
             }
             R.id.ck_ls -> {
-                toast("出库历史")
+                MyDatePicker(this, R.style.datePickerDialog, object : IPostMessage {
+                    override fun postMessage(start: Date, end: Date) {
+                        try {
+                            val adapter = HistoryCkAdapter(this@MainActivity, db, start, end)
+                            createListLayout(R.layout.history, R.id.listView_history, adapter)
+                            toast("出库历史")
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }).show()
             }
             R.id.exit -> finish()
             else -> return false
@@ -181,6 +191,8 @@ class MainActivity : Activity() {
     }
 
     interface IPostMessage {
-        fun postMessage(start: Date, end: Date): Unit
+        fun postMessage(start: Date, end: Date) {
+        }
     }
+
 }
