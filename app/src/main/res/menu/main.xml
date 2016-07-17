@@ -32,7 +32,7 @@
             android:showAsAction="ifRoom|withText"/>
 
     <item
-            android:title="选择日期"
+            android:title="选择日期 >>"
             android:showAsAction="never|withText">
         <menu>
             <group>
@@ -56,7 +56,7 @@
         </menu>
     </item>
     <item
-            android:title="仓库操作"
+            android:title="仓库操作 >>"
             android:showAsAction="never|withText">
         <menu>
             <group>
@@ -83,6 +83,8 @@
             </group>
         </menu>
     </item>
+    <item android:id="@+id/help"
+          android:title="使用帮助"/>
     <item
             android:id="@+id/exit"
             android:title="退出"

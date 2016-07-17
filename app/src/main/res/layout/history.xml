@@ -13,30 +13,35 @@
 
         <View style="@style/verLine_header"/>
         <TextView
+                android:id="@+id/history_header_id"
                 android:text="行号"
                 style="@style/listHeaderStyle"
                 android:layout_weight="0.8"/>
         <View style="@style/verLine_header"/>
 
         <TextView
+                android:id="@+id/history_header_rq"
                 android:text="日期"
                 style="@style/listHeaderStyle"
                 android:layout_weight="1.7"/>
         <View style="@style/verLine_header"/>
 
         <TextView
+                android:id="@+id/history_header_tm"
                 android:text="条码"
                 style="@style/listHeaderStyle"
                 android:layout_weight="1"/>
         <View style="@style/verLine_header"/>
 
         <TextView
+                android:id="@+id/history_header_sl"
                 android:text="数量"
                 style="@style/listHeaderStyle"
                 android:layout_weight="1"/>
         <View style="@style/verLine_header"/>
 
         <TextView
+                android:id="@+id/history_header_je"
                 android:text="金额"
                 style="@style/listHeaderStyle"
                 android:layout_weight="1.7"/>

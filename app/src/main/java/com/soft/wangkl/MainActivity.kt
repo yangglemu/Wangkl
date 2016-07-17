@@ -166,6 +166,9 @@ class MainActivity : Activity() {
                     }
                 }).show()
             }
+            R.id.help->{
+                HelpDialog(this, android.R.style.Theme_Holo_Dialog).show()
+            }
             R.id.exit -> finish()
             else -> return false
         }
