@@ -98,10 +98,7 @@ class InputSaleAdapter(val context: Context) : BaseAdapter() {
             list.forEach { db.execSQL(it) }
             db.setTransactionSuccessful()
         } catch (e: Exception) {
-            val sw = StringWriter()
-            val pw = PrintWriter(sw)
-            e.printStackTrace(pw)
-            toast(sw.toString())
+            e.printStackTrace()
         } finally {
             db.endTransaction()
         }
