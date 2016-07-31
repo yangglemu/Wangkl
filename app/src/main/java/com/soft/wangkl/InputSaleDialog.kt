@@ -111,15 +111,17 @@ class InputSaleDialog(activity: Activity, theme: Int, val db: SQLiteDatabase) : 
         cancel.setOnClickListener { dismiss() }
         sy.setOnClickListener {
             if (!checkTM(tm.text.toString())) {
-                toast("条码不存在!")
+                toast("条码${tm.text.toString()}不存在!")
+                sl.setText("1")
                 tm.text.clear()
                 tm.requestFocus()
                 return@setOnClickListener
             }
             if (!checkSL(sl.text.toString())) {
-                toast("数量输入错误!")
+                toast("数量${sl.text.toString()}输入错误!")
                 sl.setText("1")
-                sl.selectAll()
+                tm.text.clear()
+                tm.requestFocus()
                 return@setOnClickListener
             }
             addRow()

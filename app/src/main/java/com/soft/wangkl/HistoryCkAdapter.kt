@@ -14,8 +14,7 @@ import java.util.*
  * Created by 123456 on 2016/7/16.
  */
 
-class HistoryCkAdapter(activity: MainActivity, db: SQLiteDatabase, start: Date?, end: Date?)
-: DataAdapter(activity, db, start, end) {
+class HistoryCkAdapter(activity: MainActivity, db: SQLiteDatabase, start: Date?, end: Date?) : DataAdapter(activity, db, start, end) {
     override fun initData() {
         val s = dateFormatter.format(start)
         val e = dateFormatter.format(end)

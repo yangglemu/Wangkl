@@ -38,11 +38,12 @@ class InputNewGoods(context: Context, theme: Int, val db: SQLiteDatabase) : Dial
             try {
                 val ctm = tm.text.toString().toInt()
                 db.execSQL("insert into goods (tm,sj,zq,sl) values('$ctm',$ctm,1.0,0)")
-                tm.text.clear()
-                tm.requestFocus()
                 toast("新建商品成功!")
             } catch (e: Exception) {
                 toast("新建商品失败!")
+            }finally {
+                tm.text.clear()
+                tm.requestFocus()
             }
         }
         cancel.setOnClickListener { dismiss() }
